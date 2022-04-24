@@ -150,15 +150,15 @@ class ChartingState extends MusicBeatState
 		],
 		[
 			'KB_AttackPrepare',
-			"Prepares a sawblade before attacking. \nWill also call the alert event for you automatically! \n(Disable alert by setting value 1 to '0')"
+			"Prepares a sawblade before attacking. \nWill also call the alert event for you automatically! \n(Disable alert by setting value 1 to '0') \n(You can also set value 2 to '0' if you dont want the warning sound)"
 		],
 		[
 			'KB_Alert',
-			"Plays the alert animation with sound.\nSet Value1 to 2 for double alert, 3 for triple, \nand 4 for quadruple."
+			"Plays the alert animation with sound.\nSet Value1 to 2 for double alert, 3 for triple, \nand 4 for quadruple. \n(You can set value 2 to '0' if you dont want the warning sound)"
 		],
 		[
 			'KB_AlertDouble',
-			"Plays the alert animation with sound. \nUses the Double Variant sound and sprite. \nv2.2 UPDATE: Recommended to use KB_Alert instead!!!"
+			"Plays the alert animation with sound. \nUses the Double Variant sound and sprite. \n(You can set value 2 to '0' if you dont want the warning sound) \nv2.2 UPDATE: Recommended to use KB_Alert instead!!!"
 		],
 		['Green_KB_AttackPrepare', "Same as KB_AttackPrepare but green."],
 		['Green_KB_Alert', "Same as KB_Alert but green."],

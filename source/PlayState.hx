@@ -243,9 +243,12 @@ class PlayState extends MusicBeatState
 	public var songHits:Int = 0;
 	public var songMisses:Int = 0;
 	public var scoreTxt:FlxText;
+	public var scoreTxtabove:FlxText;
+	public var useNewscoreTxt:Bool = false;
 
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
+	var scoreTxtaboveTween:FlxTween;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -419,6 +422,8 @@ class PlayState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 
+		// print("that joke wasn't funny")//haz server
+
 		// for lua
 		instance = this;
 
@@ -518,9 +523,10 @@ class PlayState extends MusicBeatState
 					curStage = 'street-real';
 				case 'cessation':
 					curStage = 'street-cessation';
-				case 'censory-overload' | 'terminate':
+				case 'censory-overload' | 'censory-funniload' | 'terminate':
 					curStage = 'street-kb';
-				case 'termination':
+				// i'm a proffesional coder, i know what i'm doing
+				case 'termination' | 'termination 2' | 'termination-2':
 					curStage = 'street-termination';
 				default:
 					curStage = 'stage';
@@ -633,7 +639,7 @@ class PlayState extends MusicBeatState
 				qt_tv01.antialiasing = ClientPrefs.globalAntialiasing;
 				qt_tv01.scrollFactor.set(0.9, 0.9);
 				add(qt_tv01);
-				qt_tv01.animation.play('heart');
+				qt_tv01.animation.play('heart', true);
 				qtTVstate = 8;
 
 				cessationTroll = new FlxSprite(-62, 540).loadGraphic(Paths.image('hazard/qt-port/justkidding'));
@@ -700,7 +706,7 @@ class PlayState extends MusicBeatState
 				qt_tv01.antialiasing = ClientPrefs.globalAntialiasing;
 				qt_tv01.scrollFactor.set(0.9, 0.9);
 				add(qt_tv01);
-				qt_tv01.animation.play('idle');
+				qt_tv01.animation.play('idle', true);
 
 			case 'street-kb':
 				dadDrainHealth = 0.01185;
@@ -766,7 +772,7 @@ class PlayState extends MusicBeatState
 				qt_tv01.antialiasing = ClientPrefs.globalAntialiasing;
 				qt_tv01.scrollFactor.set(0.9, 0.9);
 				add(qt_tv01);
-				qt_tv01.animation.play('idle');
+				qt_tv01.animation.play('idle', true);
 
 			case 'street-termination':
 				disableArrowIntro = true;
@@ -852,7 +858,7 @@ class PlayState extends MusicBeatState
 				qt_tv01.antialiasing = ClientPrefs.globalAntialiasing;
 				qt_tv01.scrollFactor.set(0.9, 0.9);
 				add(qt_tv01);
-				qt_tv01.animation.play('idle');
+				qt_tv01.animation.play('idle', true);
 
 			// Inhuman / Brutality Labs
 			case 'depths': // yes
@@ -878,7 +884,7 @@ class PlayState extends MusicBeatState
 				hazardBGkb.setGraphicSize(Std.int(hazardBGkb.width * 1.1));
 				hazardBGkb.updateHitbox();
 				// hazardBGkb.alpha=0;
-				hazardBGkb.animation.play('pulse');
+				hazardBGkb.animation.play('pulse', true);
 				add(hazardBGkb);
 
 				if (!ClientPrefs.lowQuality)
@@ -930,7 +936,7 @@ class PlayState extends MusicBeatState
 					hazardInterlopeLaugh.x += 272;
 					hazardInterlopeLaugh.y += 260;
 					hazardInterlopeLaugh.animation.play("laugh1");
-					hazardInterlopeLaugh.alpha = 0;
+					hazardInterlopeLaugh.alpha = 0.00001;
 					add(hazardInterlopeLaugh);
 				}
 
@@ -1013,7 +1019,7 @@ class PlayState extends MusicBeatState
 			hazardOverlayShit.x += (FlxG.width / 2) - 60; // Mmmmmm scuffed positioning, my favourite!
 			hazardOverlayShit.y += (FlxG.height / 2) - 20;
 			hazardOverlayShit.updateHitbox();
-			hazardOverlayShit.alpha = 0;
+			hazardOverlayShit.alpha = 0.00001;
 			hazardOverlayShit.cameras = [camOther];
 			add(hazardOverlayShit);
 			acyptoOverlayShit = new BGSprite('hazard/inhuman-port/alert-vignettegren');
@@ -1022,7 +1028,7 @@ class PlayState extends MusicBeatState
 			acyptoOverlayShit.x += (FlxG.width / 2) - 60;
 			acyptoOverlayShit.y += (FlxG.height / 2) - 20;
 			acyptoOverlayShit.updateHitbox();
-			acyptoOverlayShit.alpha = 0;
+			acyptoOverlayShit.alpha = 0.00001;
 			acyptoOverlayShit.cameras = [camOther];
 			add(acyptoOverlayShit);
 		}
@@ -1111,7 +1117,7 @@ class PlayState extends MusicBeatState
 			hazardAlarmLeft = new BGSprite('hazard/inhuman-port/back-Gradient', -600, -480, 0.5, 0.5);
 			hazardAlarmLeft.setGraphicSize(Std.int(hazardAlarmLeft.width * 1.1));
 			hazardAlarmLeft.updateHitbox();
-			hazardAlarmLeft.alpha = 0;
+			hazardAlarmLeft.alpha = 0.00001;
 			hazardAlarmLeft.color = FlxColor.RED;
 			hazardAlarmLeft.cameras = [camOther];
 			hazardAlarmLeft.x -= 85;
@@ -1120,7 +1126,7 @@ class PlayState extends MusicBeatState
 			hazardAlarmRight.setGraphicSize(Std.int(hazardAlarmRight.width * 1.1));
 			hazardAlarmRight.updateHitbox();
 			hazardAlarmRight.flipX = true;
-			hazardAlarmRight.alpha = 0;
+			hazardAlarmRight.alpha = 0.00001;
 			hazardAlarmRight.color = FlxColor.RED;
 			hazardAlarmRight.cameras = [camOther];
 			hazardAlarmRight.x -= 85;
@@ -1427,6 +1433,13 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 		healthBarBG.sprTracker = healthBar;
 
+		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.scrollFactor.set();
+		scoreTxt.borderSize = 1.25;
+		scoreTxt.visible = !ClientPrefs.hideHud;
+		add(scoreTxt);
+
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;
 		iconP1.visible = !ClientPrefs.hideHud;
@@ -1440,23 +1453,23 @@ class PlayState extends MusicBeatState
 		add(iconP2);
 		reloadHealthBarColors();
 
-		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		scoreTxt.scrollFactor.set();
-		scoreTxt.borderSize = 1.25;
-		scoreTxt.visible = !ClientPrefs.hideHud;
-		add(scoreTxt);
+		scoreTxtabove = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
+		scoreTxtabove.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxtabove.scrollFactor.set();
+		scoreTxtabove.borderSize = 1.25;
+		scoreTxtabove.visible = !ClientPrefs.hideHud;
+		scoreTxtabove.alpha = 0.5;
+		if (useNewscoreTxt)
+			add(scoreTxtabove);
 
-		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
+		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "Made by Acypto", 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
 		botplayTxt.borderSize = 1.25;
 		botplayTxt.visible = cpuControlled;
 		add(botplayTxt);
 		if (ClientPrefs.downScroll)
-		{
 			botplayTxt.y = timeBarBG.y - 78;
-		}
 
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
@@ -1466,6 +1479,8 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+		if (useNewscoreTxt)
+			scoreTxtabove.cameras = [camHUD];
 		botplayTxt.cameras = [camHUD];
 		timeBar.cameras = [camHUD];
 		timeBarBG.cameras = [camHUD];
@@ -2088,7 +2103,9 @@ class PlayState extends MusicBeatState
 			}
 			else
 			{
-				if (SONG.song.toLowerCase() == 'carefree' || SONG.song.toLowerCase() == 'censory-overload')
+				if (SONG.song.toLowerCase() == 'carefree'
+					|| SONG.song.toLowerCase() == 'censory-overload'
+					|| SONG.song.toLowerCase() == 'censory-funniload')
 				{
 					FlxG.sound.music.fadeOut(1.5, 0);
 				}
@@ -2464,7 +2481,7 @@ class PlayState extends MusicBeatState
 				}
 			});
 		}
-		else if (SONG.song.toLowerCase() == 'censory-overload')
+		else if (SONG.song.toLowerCase() == 'censory-overload' || SONG.song.toLowerCase() == 'censory-funniload')
 		{
 			gfSpeed = 2;
 		} // else if (SONG.song.toLowerCase() == "termination") {
@@ -3351,11 +3368,16 @@ class PlayState extends MusicBeatState
 		if (ratingName == '?')
 		{
 			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName;
+			if (useNewscoreTxt)
+				scoreTxtabove.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName;
 		}
 		else
 		{
 			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName + ' ('
 				+ Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC; // peeps wanted no integer rating
+			if (useNewscoreTxt)
+				scoreTxtabove.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName + ' ('
+					+ Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC; // peeps wanted no integer rating
 		}
 
 		if (botplayTxt.visible)
@@ -4048,8 +4070,12 @@ class PlayState extends MusicBeatState
 		remove(iconP1);
 		remove(iconP2);
 		add(healthBar);
+		if (useNewscoreTxt)
+			remove(scoreTxtabove);
 		add(iconP1);
 		add(iconP2);
+		if (useNewscoreTxt)
+			add(scoreTxtabove);
 		healthBar.cameras = [camHUD];
 		reloadHealthBarColors();
 	}
@@ -4140,7 +4166,7 @@ class PlayState extends MusicBeatState
 			if (ClientPrefs.flashing && hazardOverlayShit != null)
 				hazardOverlayShit.alpha = newAlpha;
 
-			kb_attack_alert.animation.play(animationToPlay);
+			kb_attack_alert.animation.play(animationToPlay, true);
 			switch (animationToPlay)
 			{
 				default:
@@ -4165,7 +4191,7 @@ class PlayState extends MusicBeatState
 			if (ClientPrefs.flashing && acyptoOverlayShit != null)
 				acyptoOverlayShit.alpha = newAlpha;
 
-			kb_attack_alertgreen.animation.play(animationToPlay);
+			kb_attack_alertgreen.animation.play(animationToPlay, true);
 			switch (animationToPlay)
 			{
 				default:
@@ -4190,7 +4216,7 @@ class PlayState extends MusicBeatState
 				qtSawbladeAdded = true;
 			}
 			// Play saw attack animation
-			kb_attack_saw.animation.play('fire');
+			kb_attack_saw.animation.play('fire', true);
 			kb_attack_saw.offset.set(1600, 0);
 			FlxG.camera.shake(0.001675, 0.6);
 			camHUD.shake(0.001675, 0.2);
@@ -5158,6 +5184,7 @@ class PlayState extends MusicBeatState
 
 			case 'KB_Alert':
 				var alertType:Int = Std.parseInt(value1);
+				var sound:Bool = true; // if 0 will not play the sound
 				if (Math.isNaN(alertType))
 				{
 					// If value 1 isn't a number, checks if the player wrote it as words instead
@@ -5173,19 +5200,34 @@ class PlayState extends MusicBeatState
 							alertType = 1;
 					}
 				}
-				kbATTACK_ALERT(alertType);
+				if (value2 == '0')
+					sound = false;
+				else
+					sound = true;
+				kbATTACK_ALERT(alertType, sound);
 			case 'KB_AlertDouble':
+				var sound:Bool = true;
 				// Kept for legacy support
-				kbATTACK_ALERT(2);
+				if (value2 == '0')
+					sound = false;
+				else
+					sound = true;
+				kbATTACK_ALERT(2, sound);
 			case 'KB_AttackPrepare':
+				var sound:Bool = true;
 				KBATTACK(false);
+				if (value2 == '0')
+					sound = false;
+				else
+					sound = true;
 				if (value1 != '0')
 				{
-					kbATTACK_ALERT();
+					kbATTACK_ALERT(1, sound);
 				}
 
 			case 'Green_KB_Alert':
 				var alertType:Int = Std.parseInt(value1);
+				var sound:Bool = true;
 				if (Math.isNaN(alertType))
 				{
 					// If value 1 isn't a number, checks if the player wrote it as words instead
@@ -5201,17 +5243,29 @@ class PlayState extends MusicBeatState
 							alertType = 1;
 					}
 				}
-				kbATTACK_ALERT(alertType, true, true); // will use the same function
+				if (value2 == '0')
+					sound = false;
+				else
+					sound = true;
+				kbATTACK_ALERT(alertType, sound, true); // will use the same function
 
 			case 'Green_KB_AlertDouble':
+				var sound:Bool = true;
 				// Kept for legacy support
-				kbATTACK_ALERT(2, true, true);
+				if (value2 == '0')
+					sound = false;
+				kbATTACK_ALERT(2, sound, true);
 
 			case 'Green_KB_AttackPrepare':
+				var sound:Bool = true;
 				KBATTACK(false);
+				if (value2 == '0')
+					sound = false;
+				else
+					sound = true;
 				if (value1 != '0')
 				{
-					kbATTACK_ALERT(1, true, true);
+					kbATTACK_ALERT(1, sound, true);
 				}
 
 			case 'KB_AttackFire':
@@ -6484,7 +6538,7 @@ class PlayState extends MusicBeatState
 
 			// Makes KB's strums move back a bit to show his power... or something idfk it looks cool okay? -Haz
 			// Ported for BF. I don't know but it feels pretty buggy ngl
-			if (boyfriend.curCharacter.startsWith('kb') && !note.isSustainNote)
+			if ((boyfriend.curCharacter.startsWith('kb') || boyfriend.curCharacter.startsWith('acidkb')) && !note.isSustainNote)
 			{
 				// trace("KB shit");
 				playerStrums.members[note.noteData].y = hazardModChartDefaultStrumY[note.noteData + 4] + (ClientPrefs.downScroll ? 22 : -22);
@@ -6513,6 +6567,22 @@ class PlayState extends MusicBeatState
 						scoreTxtTween = null;
 					}
 				});
+
+				if (useNewscoreTxt)
+				{
+					if (scoreTxtaboveTween != null)
+					{
+						scoreTxtaboveTween.cancel();
+					}
+					scoreTxtabove.scale.x = 1.075;
+					scoreTxtabove.scale.y = 1.075;
+					scoreTxtaboveTween = FlxTween.tween(scoreTxtabove.scale, {x: 1, y: 1}, 0.2, {
+						onComplete: function(twn:FlxTween)
+						{
+							scoreTxtaboveTween = null;
+						}
+					});
+				}
 			}
 		}
 
@@ -7056,7 +7126,7 @@ class PlayState extends MusicBeatState
 		// v2.2: Updated to support Harder difficulty.
 		if ((storyDifficulty == 2
 			|| storyDifficulty == 3
-			|| SONG.song.toLowerCase() == "termination"
+			|| SONG.song.toLowerCase().startsWith('termination')
 			|| SONG.song.toLowerCase() == "cessation")
 			&& dadDrainHealth > 0
 			&& !note.ignoreNote
@@ -7267,7 +7337,7 @@ class PlayState extends MusicBeatState
 			var altAnim:String = "";
 
 			// Makes KB's strums move back a bit to show his power... or something idfk it looks cool okay? -Haz
-			if (dad.curCharacter.startsWith('kb') && !note.isSustainNote)
+			if ((dad.curCharacter.startsWith('kb') || dad.curCharacter.startsWith('acidkb')) && !note.isSustainNote)
 			{
 				opponentStrums.members[note.noteData].y = hazardModChartDefaultStrumY[note.noteData] + (ClientPrefs.downScroll ? 22 : -22);
 				FlxTween.tween(opponentStrums.members[note.noteData], {y: hazardModChartDefaultStrumY[note.noteData]}, 0.125, {ease: FlxEase.cubeOut});
@@ -7858,11 +7928,11 @@ class PlayState extends MusicBeatState
 
 		if (qtTVstate == 8)
 		{
-			qt_tv01.animation.play("heart");
+			qt_tv01.animation.play("heart", true);
 		}
 		else if (qtTVstate == 1)
 		{
-			qt_tv01.animation.play("alert");
+			qt_tv01.animation.play("alert", true);
 		}
 
 		if (SONG.notes[Math.floor(curStep / 16)] != null)
@@ -7942,7 +8012,7 @@ class PlayState extends MusicBeatState
 						camHUD.zoom += 0.015;
 					}
 				}
-			case 'termination':
+			case 'termination' | 'termination 2' | 'termination-2':
 				if (curBeat >= 192 && curBeat <= 320) // 1st drop
 				{
 					if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms)
@@ -7967,14 +8037,14 @@ class PlayState extends MusicBeatState
 						camHUD.zoom += 0.015;
 					}
 				}
-			case 'censory-overload':
+			case 'censory-overload' | 'censory-funniload':
 				if (curBeat >= 80 && curBeat <= 208) // first drop
 				{
 					// Gas Release effect
 					if (curBeat % 16 == 0 && !ClientPrefs.lowQuality)
 					{
-						qt_gas01.animation.play('burst');
-						qt_gas02.animation.play('burst');
+						qt_gas01.animation.play('burst', true);
+						qt_gas02.animation.play('burst', true);
 					}
 				}
 				else if (curBeat >= 304 && curBeat <= 432) // second drop
@@ -7988,8 +8058,8 @@ class PlayState extends MusicBeatState
 					// Gas Release effect
 					if (curBeat % 8 == 0 && !ClientPrefs.lowQuality)
 					{
-						qt_gas01.animation.play('burstALT');
-						qt_gas02.animation.play('burstALT');
+						qt_gas01.animation.play('burstALT', true);
+						qt_gas02.animation.play('burstALT', true);
 					}
 				}
 				else if (curBeat >= 560 && curBeat <= 688)
@@ -8002,8 +8072,8 @@ class PlayState extends MusicBeatState
 					// Gas Release effect
 					if (curBeat % 4 == 0 && !ClientPrefs.lowQuality)
 					{
-						qt_gas01.animation.play('burstFAST');
-						qt_gas02.animation.play('burstFAST');
+						qt_gas01.animation.play('burstFAST', true);
+						qt_gas02.animation.play('burstFAST', true);
 					}
 				}
 				else if (curBeat >= 832 && curBeat <= 960)
@@ -8017,8 +8087,8 @@ class PlayState extends MusicBeatState
 					// Gas Release effect
 					if (curBeat % 4 == 2 && !ClientPrefs.lowQuality)
 					{
-						qt_gas01.animation.play('burstFAST');
-						qt_gas02.animation.play('burstFAST');
+						qt_gas01.animation.play('burstFAST', true);
+						qt_gas02.animation.play('burstFAST', true);
 					}
 				}
 				else if ((curBeat == 976 || curBeat == 992) && camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms)
@@ -8028,8 +8098,8 @@ class PlayState extends MusicBeatState
 				}
 				else if (curBeat == 702 && !ClientPrefs.lowQuality)
 				{
-					qt_gas01.animation.play('burst');
-					qt_gas02.animation.play('burst');
+					qt_gas01.animation.play('burst', true);
+					qt_gas02.animation.play('burst', true);
 				}
 		}
 

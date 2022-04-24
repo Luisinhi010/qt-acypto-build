@@ -262,6 +262,8 @@ class TitleState extends MusicBeatState
 			if (FlxG.sound.music == null)
 			{
 				FlxG.sound.playMusic(Paths.music('qtMenu'), 0);
+
+				FlxG.sound.music.fadeIn(4, 0, 0.725);
 			}
 		}
 		Conductor.changeBPM(128);
@@ -626,14 +628,15 @@ class TitleState extends MusicBeatState
 			switch (sickBeats)
 			{
 				case 1:
-					if (FlxG.sound.music != null)
+				/*if (FlxG.sound.music != null)
 					{
 						FlxG.sound.pause();
 						FlxG.sound.destroy();
 					}
 					FlxG.sound.playMusic(Paths.music('qtMenu'), 0);
 
-					FlxG.sound.music.fadeIn(4, 0, 0.725);
+					FlxG.sound.music.fadeIn(4, 0, 0.725); */
+
 				case 2:
 					#if PSYCH_WATERMARKS
 					createCoolText(['Psych Engine by'], 15);
